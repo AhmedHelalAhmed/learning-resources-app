@@ -52,7 +52,8 @@ export default {
   provide() {
     return {
       resources: this.storedResources,
-      addResource: this.addResource
+      addResource: this.addResource,
+      deleteResource: this.removeResource
     };
   },
   methods: {
@@ -67,8 +68,23 @@ export default {
         link: link
       };
       // this.storedResources.push(newResource);
-      this.storedResources.unshift(newResource);
+      this.storedResources.unshift(newResource); // this not create new array but modify the original
       this.selectedTab = 'stored-resources';
+    },
+    removeResource(resourceId) {
+      /*
+      // this will not work since we just assign the refernce to new array
+      // and provide not update the other reference
+      this.storedResources = this.storedResources.filter(
+        resource => resource.id !== resourceId
+      );//this create new array
+      */
+
+      const resourceIndex = this.storedResources.findIndex(
+        resource => resource.id === resourceId
+      );
+
+      this.storedResources.splice(resourceIndex, 1); // this not create new array but modify the original
     }
   }
 };
